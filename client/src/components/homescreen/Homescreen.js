@@ -156,6 +156,9 @@ const Homescreen = (props) => {
 
 	const handleSetActive = (id) => {
 		const todo = todolists.find(todo => todo.id === id || todo._id === id);
+		if (todo !== activeList) {
+			props.tps.clearAllTransactions();
+		}
 		setActiveList(todo);
 	};
 
@@ -211,6 +214,8 @@ const Homescreen = (props) => {
 								handleSetActive={handleSetActive} createNewList={createNewList}
 								undo={tpsUndo} redo={tpsRedo}
 								updateListField={updateListField}
+								hasUndo={() => props.tps.hasTransactionToUndo()}
+								hasRedo={() => props.tps.hasTransactionToRedo()}
 							/>
 							:
 							<></>
@@ -226,6 +231,7 @@ const Homescreen = (props) => {
 									editItem={editItem} reorderItem={reorderItem}
 									setShowDelete={setShowDelete}
 									activeList={activeList} setActiveList={setActiveList}
+									closeList={() => props.tps.clearAllTransactions()}
 								/>
 							</div>
 						:

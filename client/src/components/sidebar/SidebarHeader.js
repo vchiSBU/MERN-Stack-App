@@ -16,10 +16,10 @@ const SidebarHeader = (props) => {
                         <WButton className="sidebar-buttons" onClick={props.createNewList} clickAnimation="ripple-light" shape="rounded" color="primary">
                             <i className="material-icons">add</i>
                         </WButton>
-                        <WButton className="sidebar-buttons undo-redo" onClick={props.undo} wType="texted" clickAnimation="ripple-light" shape="rounded">
+                        <WButton className="sidebar-buttons undo-redo" onClick={props.undo} wType="texted" clickAnimation="ripple-light" shape="rounded" style = {{color:props.hasUndo() ? "": "#999"}}>
                             <i className="material-icons">undo</i>
                         </WButton>
-                        <WButton className="sidebar-buttons undo-redo" onClick={props.redo} wType="texted" clickAnimation="ripple-light" shape="rounded">
+                        <WButton className="sidebar-buttons undo-redo" onClick={props.redo} wType="texted" clickAnimation="ripple-light" shape="rounded" style = {{color:props.hasRedo() ? "": "#999"}}>
                             <i className="material-icons">redo</i>
                         </WButton>
                     </div>

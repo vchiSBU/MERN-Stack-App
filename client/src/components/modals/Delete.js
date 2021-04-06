@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } 	from 'react';
 
 import { WModal, WMHeader, WMMain, WButton } from 'wt-frontend';
+import WMFooter from 'wt-frontend/build/components/wmodal/WMFooter';
 
 const Delete = (props) => {
 
@@ -9,23 +10,27 @@ const Delete = (props) => {
         props.setShowDelete(false);
     }
 
+    const [isVisible, setVisible] = useState(true);
+
     return (
         // Replace div with WModal
         <div className="delete-modal">
-            <div className="modal-header" onClose={() => props.setShowDelete(false)}>
-                Delete List?
-			</div>
-
-            <div>
-                <WButton className="modal-button cancel-button" onClick={() => props.setShowDelete(false)} wType="texted">
-                    Cancel
-				</WButton>
-                <label className="col-spacer">&nbsp;</label>
-                <WButton className="modal-button" onClick={handleDelete} clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="danger">
-                    Delete
-				</WButton>
-            </div>
-
+            <WModal visible = {isVisible}>
+				<WMHeader>
+                    <div className="modal-header" onClose={() => props.setShowDelete(false)}>
+                        Delete List?
+                    </div>
+                </WMHeader>
+                <WMFooter>
+                    <WButton className="modal-button" onClick={handleDelete} clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="danger">
+                        Delete
+                    </WButton>
+                    <label className="col-spacer">&nbsp;</label>
+                    <WButton className="modal-button cancel-button" onClick={() => {setVisible(false); props.setShowDelete(false)}} wType="texted">
+                        Cancel
+                    </WButton>
+                </WMFooter>
+            </WModal>
         </div>
     );
 }
