@@ -10,6 +10,7 @@ const SidebarContents = (props) => {
                 undo={props.undo} redo={props.redo} 
                 hasUndo={props.hasUndo}
                 hasRedo={props.hasRedo}
+                activeList = {props.activeList}
             />
             <SidebarList
                 activeid={props.activeid} handleSetActive={props.handleSetActive}

@@ -82,10 +82,10 @@ const TableEntry = (props) => {
 
             <WCol size="3">
                 <div className='button-group'>
-                    <WButton className="table-entry-buttons" onClick={() => props.reorderItem(data._id, -1)} wType="texted">
+                    <WButton className="table-entry-buttons" onClick={() => {if (props.index != 0) props.reorderItem(data._id, -1)}} wType="texted" style = {{color : props.index != 0 ? "":"#999"}}>
                         <i className="material-icons">expand_less</i>
                     </WButton>
-                    <WButton className="table-entry-buttons" onClick={() => props.reorderItem(data._id, 1)} wType="texted">
+                    <WButton className="table-entry-buttons" onClick={() => {if (!props.isLastItem) props.reorderItem(data._id, 1)}} wType="texted" style = {{color : !props.isLastItem ? "":"#999"}}>
                         <i className="material-icons">expand_more</i>
                     </WButton>
                     <WButton className="table-entry-buttons" onClick={() => props.deleteItem(data)} wType="texted">
