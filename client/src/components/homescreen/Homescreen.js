@@ -74,13 +74,17 @@ const Homescreen = (props) => {
 	const addItem = async () => {
 		let list = activeList;
 		const items = list.items;
-		const lastID = items.length >= 1 ? items[items.length - 1].id + 1 : 0;
+		// const lastID = items.length >= 1 ? items[items.length - 1].id + 1 : 0;
+		let largestID = -1;
+		items.forEach((item) => {largestID = item.id > largestID ? item.id : largestID})
+		const lastID = largestID + 1;
+
 		const newItem = {
 			_id: '',
 			id: lastID,
 			description: 'No Description',
 			due_date: 'No Date',
-			assigned_to: props.user._id,
+			assigned_to: 'No One',
 			completed: false
 		};
 		let opcode = 1;

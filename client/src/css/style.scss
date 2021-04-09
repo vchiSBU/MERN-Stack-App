@@ -61,6 +61,14 @@ html, body {
     color: $primary-color;
 }
 
+.assigned {
+    color: var(--warm-black);
+}
+
+.unassigned {
+    color: rgb(255, 44, 44);
+}
+
 .list-item-active {
     background-color: var(--deep-blue);
 }
