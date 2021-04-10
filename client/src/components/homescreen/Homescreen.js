@@ -20,6 +20,17 @@ import WInput from 'wt-frontend/build/components/winput/WInput';
 
 const Homescreen = (props) => {
 
+	const handleKeypressTransaction = async(ev) => {
+        if (ev.key.toLowerCase() == 'z' && ev.ctrlKey) {
+            console.log('3')
+            if (props.tps.hasTransactionToUndo()) await tpsUndo();
+        }
+        else if (ev.key.toLowerCase() == 'y' && ev.ctrlKey) {
+            console.log('4')
+            if (props.tps.hasTransactionToRedo()) await tpsRedo();
+        }
+    }
+
 	let todolists 							= [];
 	const [activeList, setActiveList] 		= useState({});
 	const [showDelete, toggleShowDelete] 	= useState(false);
@@ -96,7 +107,7 @@ const Homescreen = (props) => {
 	};
 
 
-	const deleteItem = async (item) => {
+	const deleteItem = async (item, index) => {
 		let listID = activeList._id;
 		let itemID = item._id;
 		let opcode = 0;
@@ -108,7 +119,7 @@ const Homescreen = (props) => {
 			assigned_to: item.assigned_to,
 			completed: item.completed
 		}
-		let transaction = new UpdateListItems_Transaction(listID, itemID, itemToDelete, opcode, AddTodoItem, DeleteTodoItem);
+		let transaction = new UpdateListItems_Transaction(listID, itemID, itemToDelete, opcode, AddTodoItem, DeleteTodoItem, index);
 		props.tps.addTransaction(transaction);
 		tpsRedo();
 	};
@@ -142,7 +153,11 @@ const Homescreen = (props) => {
 			items: [],
 		}
 		const { data } = await AddTodolist({ variables: { todolist: list }, refetchQueries: [{ query: GET_DB_TODOS }] });
-		setActiveList(list)
+		await refetchTodos(refetch);
+		if(data) {
+			let _id = data.addTodolist;
+			handleSetActive(_id);
+		}
 	};
 
 	const deleteList = async (_id) => {
@@ -191,7 +206,7 @@ const Homescreen = (props) => {
 	}
 
 	return (
-		<WLayout wLayout="header-lside">
+		<WLayout tabIndex = {0} wLayout="header-lside" onKeyDown = {handleKeypressTransaction}>
 			<WLHeader>
 				<WNavbar color="colored">
 					<ul>
