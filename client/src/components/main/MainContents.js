@@ -9,6 +9,10 @@ const MainContents = (props) => {
                 disabled={!props.activeList._id} addItem={props.addItem}
                 setShowDelete={props.setShowDelete} setActiveList={props.setActiveList}
                 closeList = {props.closeList}
+                sortDescription = {props.sortDescription}
+                sortAssigned = {props.sortAssigned}
+                sortDate = {props.sortDate}
+                sortStatus = {props.sortStatus}
             />
             <TableContents
                 key={props.activeList.id} activeList={props.activeList}

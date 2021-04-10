@@ -37,6 +37,8 @@ const Homescreen = (props) => {
 	const [showLogin, toggleShowLogin] 		= useState(false);
 	const [showCreate, toggleShowCreate] 	= useState(false);
 
+	const [sorts, setSortedList]			= useState([false, false, false, false]);
+
 	const [ReorderTodoItems] 		= useMutation(mutations.REORDER_ITEMS);
 	const [UpdateTodoItemField] 	= useMutation(mutations.UPDATE_ITEM_FIELD);
 	const [UpdateTodolistField] 	= useMutation(mutations.UPDATE_TODOLIST_FIELD);
@@ -44,7 +46,6 @@ const Homescreen = (props) => {
 	const [DeleteTodoItem] 			= useMutation(mutations.DELETE_ITEM);
 	const [AddTodolist] 			= useMutation(mutations.ADD_TODOLIST);
 	const [AddTodoItem] 			= useMutation(mutations.ADD_ITEM);
-
 
 	const { loading, error, data, refetch } = useQuery(GET_DB_TODOS);
 	if(loading) { console.log(loading, 'loading'); }
@@ -78,6 +79,67 @@ const Homescreen = (props) => {
 		return retVal;
 	}
 
+	const clone = (object) => JSON.parse(JSON.stringify(object));
+
+	const descriptionSort = (a, b) => a.description.localeCompare(b.description);
+	const sortDescription = () => {
+		let currentList = clone(activeList);
+		if (Object.keys(currentList)[0] == null) {
+			return;
+		}
+		currentList.items.sort(descriptionSort);
+		if (sorts[0]) {
+			currentList.items.reverse();
+		}
+		setSortedList([!sorts[0], sorts[1], sorts[2], sorts[3]]);
+		setActiveList(currentList);
+		refetch();
+	}
+
+	const assignedSort = (a, b) => a.assigned_to.localeCompare(b.assigned_to);
+	const sortAssigned = () => {
+		let currentList = clone(activeList);
+		if (Object.keys(currentList)[0] == null) {
+			return;
+		}
+		currentList.items.sort(assignedSort);
+		if (sorts[3]) {
+			currentList.items.reverse();
+		}
+		setSortedList([sorts[0], sorts[1], sorts[2], !sorts[3]]);
+		setActiveList(currentList);
+		refetch();
+	}
+
+	const dateSort = (a, b) => a.due_date.localeCompare(b.due_date);
+	const sortDate = () => {
+		let currentList = clone(activeList);
+		if (Object.keys(currentList)[0] == null) {
+			return;
+		}
+		currentList.items.sort(dateSort);
+		if (sorts[1]) {
+			currentList.items.reverse();
+		}
+		setSortedList([sorts[0], !sorts[1], sorts[2], sorts[3]]);
+		setActiveList(currentList);
+		refetch();
+	}
+
+	const statusSort = (a, b) => a.completed ? -1 : 1;
+	const sortStatus = () => {
+		let currentList = clone(activeList);
+		if (Object.keys(currentList)[0] == null) {
+			return;
+		}
+		currentList.items.sort(statusSort);
+		if (sorts[2]) {
+			currentList.items.reverse();
+		}
+		setSortedList([sorts[0], sorts[1], !sorts[2], sorts[3]]);
+		setActiveList(currentList);
+		refetch();
+	}
 
 	// Creates a default item and passes it to the backend resolver.
 	// The return id is assigned to the item, and the item is appended
@@ -252,6 +314,10 @@ const Homescreen = (props) => {
 									setShowDelete={setShowDelete}
 									activeList={activeList} setActiveList={setActiveList}
 									closeList={() => props.tps.clearAllTransactions()}
+									sortDescription = {sortDescription}
+									sortAssigned = {sortAssigned}
+									sortDate = {sortDate}
+									sortStatus = {sortStatus}
 								/>
 							</div>
 						:
